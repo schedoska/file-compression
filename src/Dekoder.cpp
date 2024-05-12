@@ -14,7 +14,5 @@ int main(int argc, char * argv[])
     Decoder decoder;
     Image image = decoder.DecodeImage(inFileName);
     ImageIO::WriteImage(image, outFileName);
-
-    image.printImageData();
     return 0;
 }
