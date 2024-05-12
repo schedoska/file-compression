@@ -11,13 +11,10 @@ int main(int argc, char * argv[])
     std::string inFileName(argv[1]);
     std::string outFileName(argv[2]);
 
-    std::string predModeStr;
-    if(argc > 2) predModeStr = argv[3];
-    else predModeStr = "L1";
-    ImagePrediction::Mode predMode = StringToMode(predModeStr);
-
     Decoder decoder;
-    Image image = decoder.DecodeImage(inFileName, predMode);
+    Image image = decoder.DecodeImage(inFileName);
     ImageIO::WriteImage(image, outFileName);
+
+    image.printImageData();
     return 0;
 }

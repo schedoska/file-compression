@@ -27,8 +27,8 @@ void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mo
 	file.write((char*)&w, 2);
 	file.write((char*)&h, 2);
 
-	int16_t leafCount = dictionary.size();
-	file.write((char*)&leafCount, 2);
+	char m = (char)mode;
+	file.write(&m, 1);	//Informacja o trybie predykcji
 
 	BitWriter bitWriter;
 	EncodeNode(root, bitWriter, file);

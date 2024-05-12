@@ -9,7 +9,7 @@ Decoder::~Decoder()
 {
 }
 
-Image Decoder::DecodeImage(std::string fileName, ImagePrediction::Mode mode)
+Image Decoder::DecodeImage(std::string fileName)
 {
 	std::ifstream file(fileName, std::ios::binary);
 	int16_t w;
@@ -17,9 +17,10 @@ Image Decoder::DecodeImage(std::string fileName, ImagePrediction::Mode mode)
 	file.read((char*)&w, sizeof(int16_t));
 	file.read((char*)&h, sizeof(int16_t));
 
-	file.read((char*)&leafCount, sizeof(int16_t));
+	char mode;
+	file.read((char*)&mode, 1);
 
-	std::cout << "h: " << h << ", w: " << w << ", Leaf count: " << leafCount << "\n";
+	std::cout << "h: " << h << ", w: " << w << ", Prediction mode: " << (int)mode <<"\n";
 	Image image(w, h);
 
 	BitReader bitReader;
@@ -40,7 +41,7 @@ Image Decoder::DecodeImage(std::string fileName, ImagePrediction::Mode mode)
 			PushToImage(image, val, count++);
 		}
 	}
-	return RebuildFromPrediction(image, mode);
+	return RebuildFromPrediction(image, (ImagePrediction::Mode)mode);
 }
 
 bool Decoder::PushToImage(Image& image, int16_t value, int pos)

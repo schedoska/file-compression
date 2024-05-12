@@ -1,21 +1,21 @@
-Projekt KODA intrukcja
+Projekt KODA instrukcja
 
 1. Żeby zbudować aplikację "Koder.exe" i "Dekoder.exe" wpisz polecenie 'make'
 2. Koder i Dekoder obsługują tylko obrazy w formacie '.pgm' czyli te w folderze ObrazyTestowe
-3. Kodwanie: 
-    .\Koder.exe [Obraz pgm do zakodwoania] [Plik zakodowany] [Tryb predykcji]
-DeKodwanie:
-    .\Dekoder.exe [Plik zakodowany] [Obraz pgm wyjściowy] [Tryb predykcji]
+3. Kodowanie:
+        .\Koder.exe [Obraz pgm do zakodowania] [Plik zakodowany] [Tryb predykcji]
+   DeKodwanie:
+        .\Dekoder.exe [Plik zakodowany] [Obraz pgm wyjściowy]
 
-Tryby predykcji:    L1 - Lewy sąsiad
-                    L2 - Średnia z 2 Lewych sąsiadów   
-                    L3 - Średnia z 3 Lewych sąsiadów
-                    T1 - Górny sąsiad
-                    T2 - Średnia z 2 Górnych sąsiadów   
-                    T3 - Średnia z 3 Górnych sąsiadów
-                    M - Mediana z Górnego, Lewego i Górno-Lewego.
+    Tryby predykcji: L1 - Lewy sąsiad
+    L2 - Średnia z 2 Lewych sąsiadów
+    L3 - Średnia z 3 Lewych sąsiadów
+    T1 - Górny sąsiad
+    T2 - Średnia z 2 Górnych sąsiadów
+    T3 - Średnia z 3 Górnych sąsiadów
+    M - Mediana z Górnego, Lewego i Górno-Lewego.
 
-Przykład Kodwoania: 
-    .\Koder.exe ObrazyTestowe/boat.pgm file.hu L1
-Przykłąd Dekodowania:
-    .\Dekoder.exe file.hu Decoded.pgm L1
+    Przykład Kodowania:
+        .\Koder.exe ObrazyTestowe/boat.pgm file.hu L1
+    Przykład Dekodowania:
+        .\Dekoder.exe file.hu Decoded.pgm

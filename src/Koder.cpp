@@ -37,6 +37,5 @@ int main(int argc, char * argv[])
     int newFileSize = out.tellg();
     float eff = (float)(newFileSize - orgFileSize) / (float)orgFileSize;
     std::cout << "\nFile size after compression: " << newFileSize << " B  (" << eff * 100.0 << " %)\n\n";
-
     return 0;
 }

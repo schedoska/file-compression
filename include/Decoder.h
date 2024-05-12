@@ -32,7 +32,7 @@ class Decoder
 public:
 	Decoder();
 	~Decoder();
-	Image DecodeImage(std::string fileName, ImagePrediction::Mode mode);
+	Image DecodeImage(std::string fileName);
 
 private:
 	Huffman::Node* root;
