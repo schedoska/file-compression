@@ -16,11 +16,14 @@ namespace Huffman
 		Node* right;
 		bool isLeaf;
 	};
+
 	struct nodeComparator
 	{
 		bool operator()(const Node* node1, const Node* node2);
 	};
+
 	Node* GenerateTree(Image image);
 	void GenerateDictionary(std::unordered_map<int16_t, std::string>& dictionary, Node* node, std::string code);
 	void DeleteTree(Node* node);
+	float MeanBitSize(std::unordered_map<int16_t, std::string>& dictionary, Image image);
 }

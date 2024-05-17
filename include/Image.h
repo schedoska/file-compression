@@ -2,6 +2,8 @@
 #define __Image_H__
 
 #include <iostream>
+#include <list>
+#include <unordered_map>
 
 class Image {
 public:
@@ -18,6 +20,8 @@ public:
     unsigned GetHeight() { return height; }
     unsigned GetWidth() { return width; }
     int Compare(Image image);
+    std::unordered_map<int, int> HistogramData();
+    float EntropyValue();
 
 private:
     unsigned height, width;
@@ -29,6 +33,7 @@ private:
 namespace ImageIO {
     Image ReadImage(std::string fileName);
     void WriteImage(Image image, std::string fileName);
+    void WriteHistogramData(std::unordered_map<int, int> histogram, std::string fileName);
 }
 
 #endif

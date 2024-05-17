@@ -61,4 +61,17 @@ namespace Huffman {
 	{
 		return node1->freq > node2->freq;
 	}
+
+	float MeanBitSize(std::unordered_map<int16_t, std::string>& dictionary, Image image)
+	{
+		std::unordered_map<int, int> histogram = image.HistogramData();
+		double s = image.GetHeight() * image.GetWidth();
+		double avg = 0;
+
+		for(auto& it : histogram){
+			double p = (float)it.second / s; 
+			avg += p * dictionary[it.first].length();
+		}
+		return avg;
+	}
 }

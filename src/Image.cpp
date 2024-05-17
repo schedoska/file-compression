@@ -6,6 +6,7 @@
 #include <bitset>
 #include <cstdint>
 #include <sstream>
+#include <cmath>
 
 Image::Image(unsigned width_, unsigned height_)
     : height(height_), width(width_)
@@ -77,6 +78,17 @@ Image& Image::operator=(const Image& m)
     return *this;
 }
 
+std::unordered_map<int, int> Image::HistogramData()
+{
+    std::unordered_map<int, int> freq;  //<value, freq> 
+	for (int x = 0; x < width; ++x) {
+	    for (int y = 0; y < height; ++y) {
+		    freq[(*this)(x, y)]++;
+		}
+	}
+    return freq;
+}
+
 void Image::printImageData()
 {
     for (int y = 0; y < height; ++y) {
@@ -104,6 +116,18 @@ void Image::allocSpace()
     for (int i = 0; i < height; ++i) {
         p[i] = new double[width];
     }
+}
+
+float Image::EntropyValue()
+{
+    std::unordered_map<int, int> histogram = HistogramData();
+    double s = width * height;
+    double H = 0;
+    for(auto& it : histogram){
+        double p = (float)it.second / s; 
+        H -= p*log2(p);
+    }
+    return H;
 }
 
 namespace ImageIO {
@@ -149,5 +173,14 @@ namespace ImageIO {
                 file.write(&val, sizeof(val));
             }
         }
+    }
+
+    void WriteHistogramData(std::unordered_map<int, int> histogram, std::string fileName){
+        std::ofstream file(fileName);
+        if(!file.is_open()) return;
+        for(auto& it : histogram){
+            file << it.first << " " << it.second << "\n";
+        }
+        file.close();
     }
 }

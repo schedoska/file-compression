@@ -4,6 +4,7 @@
 Encoder::Encoder()
 {
 	root = nullptr;
+	SetHistogramFile(false);
 }
 
 Encoder::~Encoder()
@@ -11,19 +12,32 @@ Encoder::~Encoder()
 	DeleteTree(root);
 }
 
+void Encoder::SetHistogramFile(bool generateFile)
+{
+	generateHistogram = generateFile;
+}
+
 void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mode mode)
 {
-	image = GeneratePredictionImage(image, mode);
+	Image image2 = GeneratePredictionImage(image, mode);
+	std::cout << "Entropy value: " << image.EntropyValue() << "\n";
+	std::cout << "Entropy value after prediction: " << image2.EntropyValue() << "\n";
+	if(generateHistogram){
+		std::cout << "Generating \"Histogram.dat\" and \"Histogram_pred.dat\" files\n";
+		ImageIO::WriteHistogramData(image.HistogramData(), "image.hist");
+		ImageIO::WriteHistogramData(image2.HistogramData(), "image_prediction.hist");
+	}
 
 	DeleteTree(root);
 	dictionary.clear();
 
-	root = Huffman::GenerateTree(image);
+	root = Huffman::GenerateTree(image2);
 	GenerateDictionary(dictionary, root, "");
+	std::cout << "Mean bit length after encoding: " << Huffman::MeanBitSize(dictionary, image2) << "\n\n";
 
 	std::ofstream file(fileName, std::ios::binary);
-	int16_t h = image.GetHeight();
-	int16_t w = image.GetWidth();
+	int16_t h = image2.GetHeight();
+	int16_t w = image2.GetWidth();
 	file.write((char*)&w, 2);
 	file.write((char*)&h, 2);
 
@@ -35,7 +49,7 @@ void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mo
 
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
-			std::string token = dictionary[image(x, y)];
+			std::string token = dictionary[image2(x, y)];
 			bitWriter.Write(token, file);
 		}
 	}

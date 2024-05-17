@@ -3,17 +3,24 @@ Projekt KODA instrukcja
 1. Żeby zbudować aplikację "Koder.exe" i "Dekoder.exe" wpisz polecenie 'make'
 2. Koder i Dekoder obsługują tylko obrazy w formacie '.pgm' czyli te w folderze ObrazyTestowe
 3. Kodowanie:
-        .\Koder.exe [Obraz pgm do zakodowania] [Plik zakodowany] [Tryb predykcji]
+        .\Koder.exe [Obraz pgm do zakodowania] [Plik zakodowany] [Tryb predykcji] [Generuj histogramy]
    DeKodwanie:
         .\Dekoder.exe [Plik zakodowany] [Obraz pgm wyjściowy]
 
-    Tryby predykcji: L1 - Lewy sąsiad
-    L2 - Średnia z 2 Lewych sąsiadów
-    L3 - Średnia z 3 Lewych sąsiadów
-    T1 - Górny sąsiad
-    T2 - Średnia z 2 Górnych sąsiadów
-    T3 - Średnia z 3 Górnych sąsiadów
-    M - Mediana z Górnego, Lewego i Górno-Lewego.
+    [Generuj histogramy]:   h - generuj histogramy
+                            brak argumentu - nie generuj
+    
+    argument jest opcjonalny, pozwala na wygenerowanie 2 plików "image.hist" i 
+    "image_prediction.hist", zawierają one wartości konieczne do stworzenia histogramów obrazu 
+    oryginlanego i po predykcji. Generowanie histogramu może odbywać się np. w MATLABIE.
+
+    [Tryby predykcji]:      L1 - Lewy sąsiad
+                            L2 - Średnia z 2 Lewych sąsiadów
+                            L3 - Średnia z 3 Lewych sąsiadów
+                            T1 - Górny sąsiad
+                            T2 - Średnia z 2 Górnych sąsiadów
+                            T3 - Średnia z 3 Górnych sąsiadów
+                            M - Mediana z Górnego, Lewego i Górno-Lewego.
 
     Przykład Kodowania:
         .\Koder.exe ObrazyTestowe/boat.pgm file.hu L1

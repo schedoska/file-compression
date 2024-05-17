@@ -4,7 +4,7 @@
 
 int main(int argc, char * argv[])
 {
-    if(argc < 2){
+    if(argc < 3){
         std::cout << "No input or output file.";
         return 0;
     }
@@ -12,7 +12,7 @@ int main(int argc, char * argv[])
     std::string outFileName(argv[2]);
 
     std::string predModeStr;
-    if(argc > 2) predModeStr = argv[3];
+    if(argc > 3) predModeStr = argv[3];
     else predModeStr = "L1";
     ImagePrediction::Mode predMode = StringToMode(predModeStr);
 
@@ -25,6 +25,10 @@ int main(int argc, char * argv[])
     std::cout << "File size: " << orgFileSize << " B\n\n";
 
     Encoder encoder;
+    if(argc > 4){
+        if(!strcmp(argv[4], "h")) encoder.SetHistogramFile(true);
+    }
+
     std::cout << "Compression to: \"" << outFileName << "\"\n\n";
     encoder.EncodeImage(image, outFileName, predMode);
 
