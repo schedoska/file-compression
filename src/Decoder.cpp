@@ -83,6 +83,10 @@ Image Decoder::RebuildFromPrediction(Image image, ImagePrediction::Mode mode)
 		return ImagePrediction::TopPrediction(image, mode, true);
 	case ImagePrediction::Mode::Median:
 		return ImagePrediction::MedianPrediction(image, mode, true);
+	case ImagePrediction::Mode::Graham:
+		return ImagePrediction::GrahamPredictionBack(image);
+	case ImagePrediction::Mode::MED_MAP:
+		return ImagePrediction::MED_MAP_PredictionBack(image);
 	default:
 		return image;
 	}

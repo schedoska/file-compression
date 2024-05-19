@@ -27,7 +27,6 @@ void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mo
 		ImageIO::WriteHistogramData(image.HistogramData(), "image.hist");
 		ImageIO::WriteHistogramData(image2.HistogramData(), "image_prediction.hist");
 	}
-
 	DeleteTree(root);
 	dictionary.clear();
 
@@ -95,6 +94,10 @@ Image Encoder::GeneratePredictionImage(Image image, ImagePrediction::Mode mode)
 		return ImagePrediction::TopPrediction(image, mode);
 	case ImagePrediction::Mode::Median:
 		return ImagePrediction::MedianPrediction(image, mode);
+	case ImagePrediction::Mode::Graham:
+		return ImagePrediction::GrahamPrediction(image);
+	case ImagePrediction::Mode::MED_MAP:
+		return ImagePrediction::MED_MAP_Prediction(image);
 	default:
 		return image;
 	}

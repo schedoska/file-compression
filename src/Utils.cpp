@@ -11,5 +11,8 @@ ImagePrediction::Mode StringToMode(std::string modestr)
     else if(modestr == "T3") return ImagePrediction::Mode::Top_3;
 
     if(modestr == "M") return ImagePrediction::Mode::Median;
+    else if(modestr == "G") return ImagePrediction::Mode::Graham;
+    else if(modestr == "MED") return ImagePrediction::Mode::MED_MAP;
+
     return ImagePrediction::Mode::Left_1;
 }

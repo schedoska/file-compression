@@ -94,6 +94,104 @@ Image ImagePrediction::MedianPrediction(Image image, Mode mode, bool backward)
 	return imageB;
 }
 
+Image ImagePrediction::GrahamPrediction(Image image)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	Image imageB(w, h);
+
+	for (int x = 0; x < w; ++x) {
+		imageB(x, 0) = image(x, 0);
+	}
+	for (int y = 0; y < w; ++y) {
+		imageB(0, y) = image(0, y);
+	}
+	for (int x = 1; x < w; ++x) {
+		for (int y = 1; y < h; ++y) {
+			int16_t pred = (image(x-1,y-1)-image(x,y-1)) > abs(image(x-1,y-1)-image(x-1,y)) ?
+				image(x,y-1) : image(x-1,y);
+			imageB(x,y) = image(x,y) - pred;
+		}
+	}
+	return imageB;
+}
+
+Image ImagePrediction::GrahamPredictionBack(Image image)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	Image imageB(w, h);
+
+	for (int x = 0; x < w; ++x) {
+		imageB(x, 0) = image(x, 0);
+	}
+	for (int y = 0; y < w; ++y) {
+		imageB(0, y) = image(0, y);
+	}
+	for (int x = 1; x < w; ++x) {
+		for (int y = 1; y < h; ++y) {
+			int16_t pred = (imageB(x-1,y-1)-imageB(x,y-1)) > abs(imageB(x-1,y-1)-imageB(x-1,y)) ?
+				imageB(x,y-1) : imageB(x-1,y);
+			imageB(x,y) = pred + image(x,y);
+		}
+	}
+	return imageB;
+}
+
+Image ImagePrediction::MED_MAP_Prediction(Image image)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	Image imageB(w, h);
+
+	for (int x = 0; x < w; ++x) {
+		imageB(x, 0) = image(x, 0);
+	}
+	for (int y = 0; y < w; ++y) {
+		imageB(0, y) = image(0, y);
+	}
+	for (int x = 1; x < w; ++x) {
+		for (int y = 1; y < h; ++y) {
+			int16_t pred;
+			if(image(x-1,y-1) >= std::max(image(x-1,y),image(x,y-1))) 
+				pred = std::min(image(x-1,y),image(x,y-1));
+			else if(image(x-1,y-1) <= std::min(image(x-1,y),image(x,y-1)))
+				pred = std::max(image(x-1,y),image(x,y-1));
+			else
+				pred = image(x,y-1) + image(x-1,y) - image(x-1,y-1);
+			imageB(x,y) = image(x,y) - pred;
+		}
+	}
+	return imageB;
+}
+
+Image ImagePrediction::MED_MAP_PredictionBack(Image image)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	Image imageB(w, h);
+
+	for (int x = 0; x < w; ++x) {
+		imageB(x, 0) = image(x, 0);
+	}
+	for (int y = 0; y < w; ++y) {
+		imageB(0, y) = image(0, y);
+	}
+	for (int x = 1; x < w; ++x) {
+		for (int y = 1; y < h; ++y) {
+			int16_t pred;
+			if(imageB(x-1,y-1) >= std::max(imageB(x-1,y),imageB(x,y-1))) 
+				pred = std::min(imageB(x-1,y),imageB(x,y-1));
+			else if(imageB(x-1,y-1) <= std::min(imageB(x-1,y),imageB(x,y-1)))
+				pred = std::max(imageB(x-1,y),imageB(x,y-1));
+			else
+				pred = imageB(x,y-1) + imageB(x-1,y) - imageB(x-1,y-1);
+			imageB(x,y) = pred + image(x,y);
+		}
+	}
+	return imageB;
+}
+
 int ImagePrediction::MedianValue(std::vector<int>& m)
 {
 	if (m.empty()) {
