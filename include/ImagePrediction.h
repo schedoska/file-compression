@@ -13,8 +13,12 @@ namespace ImagePrediction
 		LPC_2, LPC_3, LPC_4, LPC_5,
 		LPC_7, LPC_10
 	};
-	Image LeftPrediction(Image image, Mode mode, bool backward = false);
-	Image TopPrediction(Image image, Mode mode, bool backward = false);
+
+	Image Left_Prediction(Image image, Mode mode);
+	Image Left_PredictionBack(Image image, Mode mode);
+	Image Top_Prediction(Image image, Mode mode);
+	Image Top_PredictionBack(Image image, Mode mode);
+
 	Image MedianPrediction(Image image, Mode mode, bool backward = false);
 
 	Image GrahamPrediction(Image image);

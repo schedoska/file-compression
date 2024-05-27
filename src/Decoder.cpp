@@ -88,11 +88,11 @@ Image Decoder::RebuildFromPrediction(Image image, ImagePrediction::Mode mode)
 	case ImagePrediction::Mode::Left_1:
 	case ImagePrediction::Mode::Left_2:
 	case ImagePrediction::Mode::Left_3:
-		return ImagePrediction::LeftPrediction(image, mode, true);
+		return ImagePrediction::Left_PredictionBack(image, mode);
 	case ImagePrediction::Mode::Top_1:
 	case ImagePrediction::Mode::Top_2:
 	case ImagePrediction::Mode::Top_3:
-		return ImagePrediction::TopPrediction(image, mode, true);
+		return ImagePrediction::Top_PredictionBack(image, mode);
 	case ImagePrediction::Mode::Median:
 		return ImagePrediction::MedianPrediction(image, mode, true);
 	case ImagePrediction::Mode::Graham:

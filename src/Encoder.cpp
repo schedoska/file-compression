@@ -105,11 +105,11 @@ Image Encoder::GeneratePredictionImage(Image image, ImagePrediction::Mode mode)
 	case ImagePrediction::Mode::Left_1:
 	case ImagePrediction::Mode::Left_2:
 	case ImagePrediction::Mode::Left_3:
-		return ImagePrediction::LeftPrediction(image, mode);
+		return ImagePrediction::Left_Prediction(image, mode);
 	case ImagePrediction::Mode::Top_1:
 	case ImagePrediction::Mode::Top_2:
 	case ImagePrediction::Mode::Top_3:
-		return ImagePrediction::TopPrediction(image, mode);
+		return ImagePrediction::Top_Prediction(image, mode);
 	case ImagePrediction::Mode::Median:
 		return ImagePrediction::MedianPrediction(image, mode);
 	case ImagePrediction::Mode::Graham:
