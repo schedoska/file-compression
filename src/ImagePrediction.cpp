@@ -1,5 +1,7 @@
 #include "../include/ImagePrediction.h"
+#include "../include/matrix.h"
 #include <algorithm>
+#include <iostream>
 
 Image ImagePrediction::LeftPrediction(Image image, Mode mode, bool backward)
 {
@@ -207,5 +209,85 @@ int ImagePrediction::MedianValue(std::vector<int>& m)
 	return med;
 }
 
+ImagePrediction::LpcData::LpcData(Image image_, int contextSize_, Matrix<float> param_)
+{
+	image = image_;
+	contextSize = contextSize_;
+	param = param_;
+}
 
+ImagePrediction::LpcData ImagePrediction::LpcPrediction(Image image, int contextSize)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	ImagePrediction::LpcData imageLpc;
+	imageLpc.image = Image(w, h);
+	imageLpc.contextSize = contextSize;
 
+	Matrix<float> R(contextSize, contextSize);
+	Matrix<float> r(contextSize, 1);
+
+	for (int i = 0; i < imageLpc.contextSize; i++) {
+		for (int q = 0; q < imageLpc.contextSize; q++) {
+			if (q <= i) R.at(i,q) = xcorr(image, (i-q));
+			else R.at(i,q) = xcorr(image, (q-i));
+		}
+	}
+	for(int i = 0; i < contextSize; i++){
+		r.at(i,0) = xcorr(image, i+1);
+	} 
+	imageLpc.param = R.inv() * r;
+	
+	std::cout << "LPC optmial parameters:\n";
+	for(int q = 0; q < contextSize; ++q)
+		std::cout << "[a" << q+1 << ": " <<imageLpc.param.at(q,0) << "], ";
+	std::cout << "\n\n";
+	
+	for (int x = 0; x < w; ++x) {
+		for (int y = 0; y < h; ++y) {
+			double pred = 0;
+			for(int k = 0; k < contextSize; k++) 
+				pred += imageLpc.param.at(k,0) * image.Value(x-(k+1), y);
+			imageLpc.image(x,y) = image(x,y) - (int)pred;
+		}
+	}
+	
+	return imageLpc;
+}
+
+Image ImagePrediction::LpcPredictionBack(LpcData LpcImage)
+{
+	Image image = LpcImage.image;
+	Matrix<float> param = LpcImage.param;
+	int contextSize = LpcImage.contextSize;
+
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	Image imageB(w, h);
+
+	for (int y = 0; y < w; ++y) {
+		imageB(0, y) = image(0, y);
+	}
+	for (int x = 1; x < w; ++x) {
+		for (int y = 0; y < h; ++y) {
+			double pred = 0;
+			for(int k = 0; k < contextSize; k++) 
+				pred += param.at(k,0) * imageB.Value(x-(k+1), y);
+			imageB(x,y) = (int)pred + image(x,y);
+		}
+	}
+	return imageB;
+}
+
+float ImagePrediction::xcorr(Image &image, int k)
+{
+	int h = image.GetHeight();
+	int w = image.GetWidth();
+	double cor = 0;
+	for (int x = 0; x < w; ++x) {
+		for (int y = 0; y < h; ++y) {
+				cor += image.Value(x-k, y) * image.Value(x, y);
+		}
+	}
+	return (double)cor / (double)(h*w);
+}

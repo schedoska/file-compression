@@ -1,4 +1,5 @@
 #include "../include/Encoder.h"
+#include "../include/Utils.h"
 #include <fstream>
 
 Encoder::Encoder()
@@ -19,7 +20,18 @@ void Encoder::SetHistogramFile(bool generateFile)
 
 void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mode mode)
 {
-	Image image2 = GeneratePredictionImage(image, mode);
+	Image image2;
+	ImagePrediction::LpcData imageLpc;
+	imageLpc.contextSize = ModeToContextSize(mode);
+
+	if (imageLpc.contextSize) {
+		imageLpc = ImagePrediction::LpcPrediction(image, imageLpc.contextSize);
+		image2 = imageLpc.image;
+	}
+	else {
+		image2 = GeneratePredictionImage(image, mode);
+	}
+	
 	std::cout << "Entropy value: " << image.EntropyValue() << "\n";
 	std::cout << "Entropy value after prediction: " << image2.EntropyValue() << "\n";
 	if(generateHistogram){
@@ -42,6 +54,12 @@ void Encoder::EncodeImage(Image image, std::string fileName, ImagePrediction::Mo
 
 	char m = (char)mode;
 	file.write(&m, 1);	//Informacja o trybie predykcji
+	
+	if (imageLpc.contextSize){
+		for(int k = 0; k < imageLpc.contextSize; k++){
+			file.write((char*)&imageLpc.param.at(k,0), sizeof(float));
+		}
+	}
 
 	BitWriter bitWriter;
 	EncodeNode(root, bitWriter, file);

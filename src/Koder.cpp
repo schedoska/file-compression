@@ -1,6 +1,7 @@
 #include "../include/Encoder.h"
 #include "../include/Utils.h"
 #include <fstream>
+#include "../include/matrix.h"
 
 int main(int argc, char * argv[])
 {

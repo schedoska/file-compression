@@ -23,6 +23,12 @@ Projekt KODA instrukcja
                             M - Mediana z Górnego, Lewego i Górno-Lewego.
                             G - Model Grahama
                             MED - Predyktor MED/MAP
+                            LPC2 - Predykcja optymalna liniowa (rzędu 2)
+                            LPC3 - Predykcja optymalna liniowa (rzędu 3)
+                            LPC4 - Predykcja optymalna liniowa (rzędu 4)
+                            LPC5 - Predykcja optymalna liniowa (rzędu 5)
+                            LPC7 - Predykcja optymalna liniowa (rzędu 7)
+                            LPC10 - Predykcja optymalna liniowa (rzędu 10)
 
     Przykład Kodowania:
         .\Koder.exe ObrazyTestowe/boat.pgm file.hu L1

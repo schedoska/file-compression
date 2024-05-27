@@ -1,4 +1,5 @@
 #include "../include/Decoder.h"
+#include "../include/Utils.h"
 
 Decoder::Decoder()
 {
@@ -23,6 +24,14 @@ Image Decoder::DecodeImage(std::string fileName)
 	std::cout << "h: " << h << ", w: " << w << ", Prediction mode: " << (int)mode <<"\n";
 	Image image(w, h);
 
+	int contextSize = ModeToContextSize((ImagePrediction::Mode)mode);
+	Matrix<float> params(contextSize, 1);
+	for (int k = 0; k < contextSize; k++){
+		float param;
+		file.read((char*)&param, sizeof(float));
+		params.at(k, 0) = param;
+	}
+
 	BitReader bitReader;
 	root = DecodeNode(bitReader, file);
 
@@ -41,6 +50,9 @@ Image Decoder::DecodeImage(std::string fileName)
 			PushToImage(image, val, count++);
 		}
 	}
+
+	if (contextSize) 
+		return ImagePrediction::LpcPredictionBack(ImagePrediction::LpcData(image,contextSize,params));
 	return RebuildFromPrediction(image, (ImagePrediction::Mode)mode);
 }
 

@@ -4,13 +4,13 @@ CFLAGS=-I.
 all: Koder Dekoder
 	.\Koder.exe
 
-Koder: Koder.o Encoder.o Decoder.o Huffman.o Image.o ImagePrediction.o Utils.o
+Koder: Koder.o Encoder.o Decoder.o Huffman.o Image.o ImagePrediction.o Utils.o matrix.o
 	$(CC) -o Koder obj/Koder.o obj/Encoder.o obj/Decoder.o \
-	obj/Huffman.o obj/Image.o obj/ImagePrediction.o obj/Utils.o
+	obj/Huffman.o obj/Image.o obj/ImagePrediction.o obj/Utils.o obj/matrix.o
 
-Dekoder: Dekoder.o Encoder.o Decoder.o Huffman.o Image.o ImagePrediction.o Utils.o
+Dekoder: Dekoder.o Encoder.o Decoder.o Huffman.o Image.o ImagePrediction.o Utils.o matrix.o
 	$(CC) -o Dekoder obj/Dekoder.o obj/Encoder.o obj/Decoder.o \
-	obj/Huffman.o obj/Image.o obj/ImagePrediction.o obj/Utils.o
+	obj/Huffman.o obj/Image.o obj/ImagePrediction.o obj/Utils.o obj/matrix.o
 
 Dekoder.o: src/Dekoder.cpp
 	$(CC) -c src/Dekoder.cpp -o obj/Dekoder.o
@@ -35,3 +35,6 @@ ImagePrediction.o: src/ImagePrediction.cpp include/ImagePrediction.h
 
 Utils.o: src/Utils.cpp include/Utils.h
 	$(CC) -c src/Utils.cpp -o obj/Utils.o
+
+matrix.o: src/matrix.cpp include/matrix.h
+	$(CC) -c src/matrix.cpp -o obj/matrix.o

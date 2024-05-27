@@ -130,6 +130,13 @@ float Image::EntropyValue()
     return H;
 }
 
+double Image::Value(int x, int y)
+{
+    if(x < 0 || x >= width) return 0;
+    if(y < 0 || y >= height) return 0;
+    return p[y][x];
+}
+
 namespace ImageIO {
     Image ReadImage(std::string fileName) {
         std::string inputLine;

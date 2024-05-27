@@ -22,6 +22,7 @@ public:
     int Compare(Image image);
     std::unordered_map<int, int> HistogramData();
     float EntropyValue();
+    double Value(int x, int y);
 
 private:
     unsigned height, width;
