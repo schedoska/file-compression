@@ -27,6 +27,9 @@ public:
 	Huffman::Node* GetTreeRoot();
 	void SetHistogramFile(bool generateFile);
 
+	void EncodeImage_Debug(Image image, std::string fileName, ImagePrediction::Mode mode,
+	float &Entropy_org, float &EntropyAfter, float &MeanSize);
+
 private:
 	Huffman::Node* root;
 	std::unordered_map<int16_t, std::string> dictionary;

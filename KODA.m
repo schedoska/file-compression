@@ -1,5 +1,9 @@
 clear all
 
+% To było pierwotnie
+% size = 3;
+size = 3;
+
 fileID = fopen("image.hist","r");
 formatSpec = '%f %f';
 sizeA = [2 Inf];
@@ -13,7 +17,7 @@ end
 imageVar = var(B)
 
 figure;
-histogram(B,'BinWidth',3);
+histogram(B,'BinWidth',size);
 hold on;
 fclose(fileID);
 
@@ -32,9 +36,9 @@ end
 imageVar_pred = var(B)
 
 % figure;
-histogram(B,'BinWidth',3);
+histogram(B,'BinWidth',size);
 title('Histogramy - boat.pgm');
-legend('Dane wejściowe','Dane po predykcji - Lewy sąsiad');
+legend('Dane wejściowe','Dane po predykcji - Mediana L,T,L&T');
 set(gcf,'units','points','position',[100,100,500,400])
 
 fclose(fileID2);

@@ -3,8 +3,12 @@
 #include <fstream>
 #include "../include/matrix.h"
 
+//#define DEBUG_MODE
+
 int main(int argc, char * argv[])
 {
+    #ifndef DEBUG_MODE
+
     if(argc < 3){
         std::cout << "No input or output file.";
         return 0;
@@ -43,4 +47,6 @@ int main(int argc, char * argv[])
     float eff = (float)(newFileSize - orgFileSize) / (float)orgFileSize;
     std::cout << "\nFile size after compression: " << newFileSize << " B  (" << eff * 100.0 << " %)\n\n";
     return 0;
+    
+    #endif
 }

@@ -179,3 +179,66 @@ void Encoder::BitWriter::Dump(std::ofstream& file)
 		file.write(&buffor, sizeof(buffor));
 	}
 }
+
+void Encoder::EncodeImage_Debug(Image image, std::string fileName, ImagePrediction::Mode mode,
+	float &Entropy_org, float &EntropyAfter, float &MeanSize)
+{
+	Image image2;
+	ImagePrediction::LpcData imageLpc;
+	imageLpc.contextSize = ModeToContextSize(mode);
+
+	if (imageLpc.contextSize) {
+		imageLpc = ImagePrediction::LpcPrediction(image, imageLpc.contextSize);
+		image2 = imageLpc.image;
+	}
+	else {
+		image2 = GeneratePredictionImage(image, mode);
+	}
+	
+	std::cout << "Entropy value: " << image.EntropyValue() << "\n";
+	Entropy_org = image.EntropyValue();
+	//std::cout << "Entropy value after prediction: " << image2.EntropyValue() << "\n";
+	EntropyAfter = image2.EntropyValue();
+
+	if(generateHistogram){
+		std::cout << "Generating \"Histogram.dat\" and \"Histogram_pred.dat\" files\n";
+		ImageIO::WriteHistogramData(image.HistogramData(), "image.hist");
+		ImageIO::WriteHistogramData(image2.HistogramData(), "image_prediction.hist");
+	}
+	DeleteTree(root);
+	dictionary.clear();
+
+	root = Huffman::GenerateTree(image2);
+	GenerateDictionary(dictionary, root, "");
+	//std::cout << "Mean bit length after encoding: " << Huffman::MeanBitSize(dictionary, image2) << "\n\n";
+	MeanSize = Huffman::MeanBitSize(dictionary, image2);
+
+	std::ofstream file(fileName, std::ios::binary);
+	int16_t h = image2.GetHeight();
+	int16_t w = image2.GetWidth();
+	file.write((char*)&w, 2);
+	file.write((char*)&h, 2);
+
+	char m = (char)mode;
+	file.write(&m, 1);	//Informacja o trybie predykcji
+	
+	if (imageLpc.contextSize){
+		for(int k = 0; k < imageLpc.contextSize; k++){
+			file.write((char*)&imageLpc.param.at(k,0), sizeof(float));
+		}
+	}
+
+	BitWriter bitWriter;
+	EncodeNode(root, bitWriter, file);
+
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			std::string token = dictionary[image2(x, y)];
+			bitWriter.Write(token, file);
+		}
+	}
+	bitWriter.Dump(file);
+
+	file.close();
+	return;
+}
