@@ -1,4 +1,4 @@
-# File Compresso/Decompressor
+# File Compressor/Decompressor
 
 Project is compsed with two seperate applications. Coder allows to compress .pgm images using chosen prediction algorithm with Huffman coding technique. Decoder converts compressed file back to .pgm (P5) image. 
 
