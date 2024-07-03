@@ -34,6 +34,23 @@ To compress .pgm file using Koder application:
 | LPC7 | Optimal linear prediction - rank 7 |
 | LPC10 | Optimal linear prediction - rank 10 |
 
+After invoking the coding command, application will dispay information about compressed image.
+
+![koda](https://github.com/schedoska/file-compression/assets/169594194/c7c130f1-f6df-4276-a023-475ff2801f20)
+
+* Image - Path to coded .pgm image
+* w, h - Dimensions of the image
+* File size
+* Name of the output file
+* Entropy value before prediction algorithm
+* Entropy value after prediction algorithm
+* Mean bit length (of single pixel data) after prediction algorithm
+* Full list of prediction error values and their bit symbols
+
+![koda2](https://github.com/schedoska/file-compression/assets/169594194/c9f03388-44c8-41c1-9e3b-61d592a6600f)
+  
+* File size after compression, with effectivness measured in precentage of storage space saved in respect to the original image.
+
 ## Decoding 
 
 Dekoder appliaction automatically detects used prediction algorithm. User needs to provide path to file that needs to ne decoded and output file path.
