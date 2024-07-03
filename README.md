@@ -69,3 +69,10 @@ Dekoder appliaction automatically detects used prediction algorithm. User needs 
 ```
 .\Dekoder.exe file.hu Decoded.pgm
 ```
+
+## Generating histograms
+
+Project directory also contains MATLAB script for generating histograms graphs using generated files (h argument):
+
+![koda3](https://github.com/schedoska/file-compression/assets/169594194/8630f454-63ca-4286-860f-d55bdb55b00d)
+
